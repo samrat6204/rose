@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rose Animation</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to bottom, #111, #444);
+            margin: 0;
+            overflow: hidden;
+        }
+        .button-container {
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background: red;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.5);
+        }
+        .rose {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            animation: bloom 5s ease-in-out infinite alternate;
+        }
+        .petal {
+            position: absolute;
+            width: 25px;
+            height: 40px;
+            background: radial-gradient(circle, red, darkred);
+            border-radius: 50%;
+            opacity: 0;
+            animation: fadeIn 3s ease-in-out forwards;
+            filter: drop-shadow(0px 0px 10px rgba(255,0,0,0.5));
+        }
+        .stem {
+            position: absolute;
+            width: 5px;
+            height: 60px;
+            background: linear-gradient(to bottom, green, darkgreen);
+            top: 40px;
+            left: 22px;
+            animation: grow 5s ease-in-out forwards;
+            box-shadow: 0px 0px 10px rgba(0,255,0,0.5);
+        }
+        @keyframes bloom {
+            from { transform: scale(0.5) rotate(0deg); }
+            to { transform: scale(1) rotate(360deg); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes grow {
+            from { height: 0px; }
+            to { height: 60px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="button-container">
+        <button onclick="generateRoses()">I lOve you baby / Click me </button>
+    </div>
+    <div id="rose-container"></div>
+    
+    <script>
+        function generateRoses() {
+            const container = document.getElementById("rose-container");
+            container.innerHTML = "";
+            let count = 0;
+            const maxRoses = 1000; // Reduced to 1000 for better performance
+            
+            function createRose() {
+                if (count >= maxRoses) return;
+                count++;
+                
+                let rose = document.createElement("div");
+                rose.className = "rose";
+                rose.style.left = Math.random() * window.innerWidth + "px";
+                rose.style.top = Math.random() * window.innerHeight + "px";
+                
+                for (let j = 0; j < 4; j++) {
+                    let petal = document.createElement("div");
+                    petal.className = "petal";
+                    petal.style.animationDelay = `${Math.random() * 3}s`;
+                    rose.appendChild(petal);
+                }
+                
+                let stem = document.createElement("div");
+                stem.className = "stem";
+                rose.appendChild(stem);
+                
+                container.appendChild(rose);
+                requestAnimationFrame(createRose); // Spread out rendering
+            }
+            
+            createRose();
+        }
+    </script>
+</body>
+</html>
